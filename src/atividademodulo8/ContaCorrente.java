@@ -51,4 +51,11 @@ public class ContaCorrente extends Conta implements Tributavel{
     public double valorImpostoManutencaoDaConta() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @Override
+    public String toString(){
+        return super.toString() +
+                "\nSaldo em conta: R$ "+String.format("%.2f", this.saldo)+
+                "\nSaldo Cheque-Especial: R$ "+String.format("%.2f", this.chequeEspecial);
+    }
 }
