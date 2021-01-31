@@ -1,7 +1,8 @@
 package atividademodulo8;
 
 /**
- *
+ *  Classe abstrata Conta para base de implementação
+ * dos tipos de conta do banco.
  * @author Victor
  */
 public abstract class Conta {
@@ -41,10 +42,11 @@ public abstract class Conta {
     public void setNumeroConta(int numeroConta) {
         this.numeroConta = numeroConta;
     }
-
+    
+    //Será desenvolvido nos filhos da classe Conta
     public abstract double getSaldo();
 
-    public void setSaldo(double saldo) {
+    private void setSaldo(double saldo) {
         this.saldo = saldo;
     }
     
