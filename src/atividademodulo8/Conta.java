@@ -43,8 +43,10 @@ public abstract class Conta {
         this.numeroConta = numeroConta;
     }
     
-    //Será desenvolvido nos filhos da classe Conta
-    public abstract double getSaldo();
+    //Será melhor desenvolvido nos filhos da classe Conta
+    public double getSaldo(){
+        return this.saldo;
+    }
 
     private void setSaldo(double saldo) {
         this.saldo = saldo;
