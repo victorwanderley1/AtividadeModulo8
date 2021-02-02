@@ -69,5 +69,6 @@ public abstract class Conta {
                 "\nNúmero da Conta: "+this.getNumeroConta();
     }
     
+    public abstract boolean sacar(double valorSaque);
     
 }
