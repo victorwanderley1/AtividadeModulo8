@@ -25,5 +25,16 @@ public class ContaPoupanca extends Conta{
         return super.toString() +
                 "\nSaldo em conta: R$ "+String.format("%.2f", this.saldo);
     }
+
+    @Override
+    public boolean sacar(double valorSaque) {
+        if (verificarPossibilidadeSaque(valorSaque)){
+            this.saldo -= valorSaque;
+            return true;
+        } else return false;
+    }
     
+    public boolean verificarPossibilidadeSaque(double valorSaque){
+        return valorSaque <= this.saldo;
+    }
 }
