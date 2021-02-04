@@ -37,8 +37,15 @@ public class ContaSalario extends Conta{
         
     }
     
-    
     private boolean verificarQuantidadeSaques(){
         return this.quantSaques < this.limiteSaques;
+    }
+    
+    @Override
+    public String toString(){
+        return super.toString()+
+                "\nSaldo em conta: R$ "+String.format("%.2f", this.getSaldo())+
+                "\nQuantidade de saques restantes: "+
+                (this.limiteSaques-this.quantSaques);
     }
 }
