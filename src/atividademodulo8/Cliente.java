@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Cliente {
     public String nome;
-    List<Conta> listaDeContas = new ArrayList();
+    private List<Conta> listaDeContas = new ArrayList();
     
     public Cliente(String nome){
         this.nome = nome;
@@ -29,6 +29,14 @@ public class Cliente {
 
     public void addConta(Conta conta) {
         this.listaDeContas.add(conta);
+    }
+    
+    public double getSaldoTotalCliente(){
+        double saldoTotal = 0;
+        for (Conta conta: getListaDeContas()){
+            saldoTotal += conta.getSaldo();
+        }
+        return saldoTotal;
     }
 
 }
