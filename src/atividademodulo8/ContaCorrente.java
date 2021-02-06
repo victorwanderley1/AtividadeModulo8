@@ -4,7 +4,7 @@ package atividademodulo8;
  *
  * @author Victor-Vanessa
  */
-public class ContaCorrente extends Conta implements Tributavel{
+public class ContaCorrente extends Conta implements Tributavel, Comparable<Conta>{
     protected double chequeEspecial;
 
     public ContaCorrente(Cliente cliente, int numeroAgencia, int numeroConta, 
@@ -57,5 +57,10 @@ public class ContaCorrente extends Conta implements Tributavel{
         return super.toString() +
                 "\nSaldo em conta: R$ "+String.format("%.2f", this.saldo)+
                 "\nSaldo Cheque-Especial: R$ "+String.format("%.2f", this.chequeEspecial);
+    }
+    
+    @Override
+    public int compareTo(Conta o) {
+        return 0;
     }
 }
