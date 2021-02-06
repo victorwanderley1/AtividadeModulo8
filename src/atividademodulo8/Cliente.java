@@ -44,9 +44,8 @@ public class Cliente {
     
     public double getSaldoTotalCliente(){
         double saldoTotal = 0;
-        for (Conta conta: getListaDeContas()){
-            saldoTotal += conta.getSaldo();
-        }
+        saldoTotal = getListaDeContas().stream().map(conta -> conta.getSaldo())
+                .reduce(saldoTotal, (accumulator, _item) -> accumulator + _item);
         return saldoTotal;
     }
     
