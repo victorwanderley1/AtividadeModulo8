@@ -4,7 +4,7 @@ package atividademodulo8;
  *
  * @author Victor
  */
-public class ContaSalario extends Conta{
+public class ContaSalario extends Conta implements Comparable<Conta>{
     private final int limiteSaques;
     public int quantSaques;
 
@@ -47,5 +47,10 @@ public class ContaSalario extends Conta{
                 "\nSaldo em conta: R$ "+String.format("%.2f", this.getSaldo())+
                 "\nQuantidade de saques restantes: "+
                 (this.limiteSaques-this.quantSaques);
+    }
+    
+    @Override
+    public int compareTo(Conta o) {
+        return 2;
     }
 }
