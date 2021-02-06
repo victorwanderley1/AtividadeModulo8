@@ -2,9 +2,9 @@ package atividademodulo8;
 
 /**
  * 
- * @author Victor-Vanessa
+ * @author Victor
  */
-public class ContaPoupanca extends Conta{
+public class ContaPoupanca extends Conta implements Comparable<Conta>{
     private final int diaAniversario;
     private final double taxaDeJuros;
 
@@ -36,5 +36,10 @@ public class ContaPoupanca extends Conta{
     
     public boolean verificarPossibilidadeSaque(double valorSaque){
         return valorSaque <= this.saldo;
+    }
+
+    @Override
+    public int compareTo(Conta o) {
+        return 1;
     }
 }
