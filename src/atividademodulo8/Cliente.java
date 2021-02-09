@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author Victor
  */
-public class Cliente {
+public class Cliente implements Comparable<Cliente>{
     public final int CONTACORRENTE = 0;
     public final int CONTAPOUPANCA = 1;
     public final int CONTASALARIO = 2;
@@ -57,7 +57,7 @@ public class Cliente {
      * @param chequeEspecial
      * @return retorna false caso o cliente já tenha uma conta poupança
      */
-    public boolean abrirContaCorrente(int numeroAgencia, int numeroConta, 
+    protected boolean abrirContaCorrente(int numeroAgencia, int numeroConta, 
             double saldo, double chequeEspecial){
         if(!this.verifiContaPoupanca){
             ContaCorrente contaCorrente = new ContaCorrente(this, numeroAgencia,
@@ -78,7 +78,7 @@ public class Cliente {
      * @param taxaDeJuros
      * @return retorna false caso o cliente já tenha uma conta poupança
      */
-    public boolean abrirContaPoupanca(int numeroAgencia, int numeroConta, 
+    protected boolean abrirContaPoupanca(int numeroAgencia, int numeroConta, 
             double saldo, int diaAniversario, double taxaDeJuros){
         
         if(!this.verifiContaPoupanca){
@@ -99,7 +99,7 @@ public class Cliente {
      * @param limiteSaques
      * @return retorna false caso o cliente já tenha uma conta salário 
      */
-    public boolean abrirContaSalario(int numeroAgencia, int numeroConta,
+    protected boolean abrirContaSalario(int numeroAgencia, int numeroConta,
             double saldo, int limiteSaques){
         if (!this.verifiContaSalario){
             ContaSalario contaSalario = new ContaSalario(this, numeroAgencia,
@@ -108,6 +108,11 @@ public class Cliente {
             this.verifiContaSalario = true;
             return true;
         } else return false;
+    }
+
+    @Override
+    public int compareTo(Cliente o) {
+        return this.getNome().compareTo(o.getNome());
     }
 
 }
