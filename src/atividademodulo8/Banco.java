@@ -14,7 +14,10 @@ public class Banco {
     }
     
     public void addCliente(String nomeCliente){
-        Cliente cliente = new Cliente(nomeCliente);
-        this.getClientesDoBanco().put(cliente.getNome(), cliente);
+        if(!this.getClientesDoBanco().containsKey(nomeCliente)){
+            Cliente cliente = new Cliente(nomeCliente);
+            this.getClientesDoBanco().put(cliente.getNome(), cliente);
+            System.out.println("Cadastro Realizado Com Sucesso!");
+        }else System.out.println("Cliente já cadastrado");
     }
 }
