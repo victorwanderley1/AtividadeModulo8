@@ -1,5 +1,8 @@
 package atividademodulo8;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 /**
  *
  * @author Victor
@@ -32,6 +35,10 @@ public class MenuBanco {
                     System.out.println("Clientes cadastrados no banco: ");
                     banco.getClientesDoBanco().values().stream().map(cliente -> cliente.getNome()).sorted().forEach(System.out::println);
                     break;
+                case 4:
+                    System.out.println("Qual relatório deseja receber? \n1 - Saldo Total Em Banco ");
+                    int opcaoRelatorio = entradaTeclado.nextInt();
+                    menuRelatorio(opcaoRelatorio);
                 case 0:
                     entradaTeclado.close();
                     System.out.println("Opção 0");
@@ -108,6 +115,21 @@ public class MenuBanco {
             default:
                 System.out.println("Opção inválida\n");
                 menuPrincipal();
+        }
+    }
+    
+    public void menuRelatorio(int relatorio){
+        switch (relatorio){
+            case 1:
+                List<Double> listSaldoTotalEmBanco;
+                listSaldoTotalEmBanco = banco.getClientesDoBanco().values()
+                        .stream().map(cliente -> cliente.getSaldoTotalCliente())
+                        .sorted().collect(Collectors.toList());
+                double saldoTotalEmBanco = 0;
+                for(double saldo: listSaldoTotalEmBanco){
+                    saldoTotalEmBanco += saldo; 
+               }
+                System.out.printf("\nValor total no banco: R$ %.2f \n", saldoTotalEmBanco);
         }
     }
 }
