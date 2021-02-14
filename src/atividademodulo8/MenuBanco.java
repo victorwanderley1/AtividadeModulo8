@@ -137,4 +137,41 @@ public class MenuBanco {
                 menuPrincipal();
         }
     }
+    
+    private boolean validaConta(int numAgencia, int numConta){
+        boolean validado = false;
+        for (Cliente cliente: banco.getClientesDoBanco().values()){
+            for(Conta conta: cliente.getListaDeContas()){
+                validado = conta.autenticacaoConta(numAgencia, numConta);
+                if(validado){
+                    break;
+                }
+            }
+            if(validado){
+                break;
+            }
+        }
+        
+        return validado;
+    }
+    
+//    public void menuTransferencia(){
+//        mostra(informe a agencia da conta destinataria)
+//        recebe(agencia);
+//        mostra(informe o numero da conta destinataria);
+//        recebe(numeroConta);
+//        se(contaValida(agencia, numeroConta)){ (Criar Método boolean contaValida())
+//            mostra(de onde saira o dinhero);
+//            mostra(contas disponiveis());
+//            recebe(o tipo da conta);
+//            mostra(qual o valor a ser transferido?);
+//            recebe(valor);
+//            se(valor estiver disponivel){
+//                contaRemetente.saldo -= valor;
+//                contaDestinataria += valor
+//            }senão: saldo insuficiente
+//        }senão: contaInexistente
+        
+        
 }
+

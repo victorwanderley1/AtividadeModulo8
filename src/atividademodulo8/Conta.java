@@ -72,4 +72,8 @@ public abstract class Conta {
     
     public abstract boolean sacar(double valorSaque);
     
+    protected boolean autenticacaoConta(int numAgencia, int numConta){
+        return ((this.numeroAgencia == numAgencia) && (this.numeroConta == numConta));
+    }   
+    
 }
