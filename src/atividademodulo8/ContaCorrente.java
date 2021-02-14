@@ -5,14 +5,13 @@ package atividademodulo8;
  * @author Victor-Vanessa
  */
 public class ContaCorrente extends Conta implements Tributavel, Comparable<Conta>{
-    protected String tipoDeConta;
     protected double chequeEspecial;
 
     public ContaCorrente(Cliente cliente, int numeroAgencia, int numeroConta, 
             double saldo, double chequeEspecial) {
         super(cliente, numeroAgencia, numeroConta, saldo);
         this.chequeEspecial = chequeEspecial;
-        this.tipoDeConta = "Conta Corrente";
+        super.tipoDeConta = "Conta Corrente";
     }
 
     @Override
