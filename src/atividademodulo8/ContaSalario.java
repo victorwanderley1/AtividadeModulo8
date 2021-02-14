@@ -5,7 +5,6 @@ package atividademodulo8;
  * @author Victor
  */
 public class ContaSalario extends Conta implements Comparable<Conta>{
-    protected String tipoDeConta;
     private final int limiteSaques;
     private int quantSaques;
 
@@ -14,7 +13,7 @@ public class ContaSalario extends Conta implements Comparable<Conta>{
         super(cliente, numeroAgencia, numeroConta, saldo);
         this.limiteSaques = limiteSaques;
         this.quantSaques = 0;
-        this.tipoDeConta = "Conta Salário";
+        super.tipoDeConta = "Conta Salário";
     }
 
     @Override
