@@ -5,6 +5,7 @@ package atividademodulo8;
  * @author Victor
  */
 public class ContaPoupanca extends Conta implements Comparable<Conta>{
+    protected String tipoDeConta;
     private final int diaAniversario;
     private final double taxaDeJuros;
 
@@ -13,6 +14,7 @@ public class ContaPoupanca extends Conta implements Comparable<Conta>{
         super(cliente, numeroAgencia, numeroConta, saldo);
         this.diaAniversario = diaAniversario;
         this.taxaDeJuros = taxaDeJuros;
+        this.tipoDeConta = "Conta Poupança";
     }
     
     public double getSaldo(int dia) {
