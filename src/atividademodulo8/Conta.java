@@ -10,6 +10,7 @@ public abstract class Conta {
     protected int numeroAgencia;
     protected int numeroConta;
     protected double saldo;
+    protected String tipoDeConta;
     
 
     public Conta(Cliente cliente, int numeroAgencia, int numeroConta, double saldo) {
