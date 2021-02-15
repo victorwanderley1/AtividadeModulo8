@@ -34,14 +34,26 @@ public class Cliente implements Comparable<Cliente>{
         this.nome = nome;
     }
 
+    /**
+     *
+     * @return Retorna a listaDeContas
+     */
     public List<Conta> getListaDeContas() {
         return listaDeContas;
     }
 
-    public void addConta(Conta conta) {
+    /**
+     *  Adiciona uma instância de conta à listaDeContas
+     * @param conta
+     */
+    private void addConta(Conta conta) {
         this.listaDeContas.add(conta);
     }
     
+    /**
+     *
+     * @return Retorna a soma do saldo de todas as contas ativas do Cliente
+     */
     public double getSaldoTotalCliente(){
         double saldoTotal = 0;
         saldoTotal = getListaDeContas().stream().map(conta -> conta.getSaldo())
@@ -115,6 +127,10 @@ public class Cliente implements Comparable<Cliente>{
         return this.getNome().compareTo(o.getNome());
     }
     
+    /**
+     * 
+     * @return As contas cadastradas do Cliente
+     */
     protected String mostraContas(){
         int cont = 0;
         String contasCliente = "";
