@@ -114,5 +114,16 @@ public class Cliente implements Comparable<Cliente>{
     public int compareTo(Cliente o) {
         return this.getNome().compareTo(o.getNome());
     }
+    
+    protected String mostraContas(){
+        int cont = 0;
+        String contasCliente = "";
+        for(Conta conta: this.getListaDeContas()){
+            contasCliente = contasCliente+cont+") "+conta.tipoDeConta+"\n";
+            cont++;
+        }
+        return contasCliente;
+    }
 
 }
+
