@@ -199,6 +199,7 @@ public class MenuBanco {
                         System.out.println("\n");
                     }
                 }
+                break;
                 
             default:
                 System.out.println("Opção inválida!");
