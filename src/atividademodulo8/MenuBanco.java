@@ -11,16 +11,20 @@ public class MenuBanco {
     Scanner entradaTeclado = new Scanner(System.in);
     private boolean ativo = true;
     public void menuPrincipal(){
+        int opcao = 0;
         while(ativo){
+            opcao = 0;
             System.out.println("\n-------Banco--Mananger--2.0-------");
             System.out.println("");
             System.out.println("Selecione uma opção abaixo:");
             System.out.println("(1) Cadastrar novo cliente");
             System.out.println("(2) Abrir nova conta");
             System.out.println("(3) Relatórios");
+            System.out.println("(4) Realizar Transferência");
             System.out.println("(0) Encerrar programa");
             System.out.print("Digite a opção: ");
-            int opcao = entradaTeclado.nextInt();
+            opcao = entradaTeclado.nextInt();
+            entradaTeclado.nextLine();
             switch (opcao){
                 case 1:
                     menuCadastrarCliente();
@@ -30,10 +34,15 @@ public class MenuBanco {
                     break;
                 case 3:
                     System.out.println("\nQual relatório deseja receber? "
-                            + "\n1) Clientes Cadastrados no banco"
-                            + "\n2) - Saldo Total Em Banco ");
+                            + "\n1) - Clientes Cadastrados no banco"
+                            + "\n2) - Saldo Total Em Banco "
+                            + "\n3) - Saldo Por Cliente");
                     int opcaoRelatorio = entradaTeclado.nextInt();
+                    entradaTeclado.nextLine();
                     menuRelatorio(opcaoRelatorio);
+                    break;
+                case 4:
+                    menuTransferencia();
                     break;
                 case 0:
                     entradaTeclado.close();
@@ -48,14 +57,15 @@ public class MenuBanco {
     
     public void menuCadastrarCliente(){
         System.out.println("\nDigite o nome do cliente a ser cadastrado");
-        banco.addCliente(entradaTeclado.next());
+        banco.addCliente(entradaTeclado.nextLine());
     }
     
     public void menuAbrirConta(){
+        String nomeCliente = "";
         System.out.println("Selecione o cliente que deseja abrir a conta: \n");
         banco.getClientesDoBanco().values().stream().map(cliente -> cliente.getNome()).sorted().forEach(System.out::println);
         System.out.println("\nDigite o nome do cliente: ");
-        String nomeCliente = entradaTeclado.next();
+        nomeCliente = entradaTeclado.nextLine();
         if (banco.getClientesDoBanco().containsKey(nomeCliente)){
             System.out.println("\nSelecione o tipo  de conta: ");
             System.out.println("1 - Conta Corrente\n2 - Conta Poupança\n3 - Conta Salário");
@@ -93,7 +103,8 @@ public class MenuBanco {
                 int diaAniversario = entradaTeclado.nextInt();
                 System.out.println("Valor taxa de juros: ");
                 double valorTaxaDeJuros = entradaTeclado.nextDouble();
-                banco.getClientesDoBanco().get(nomeCliente).abrirContaPoupanca(numeroAgencia, numeroConta, saldoInicial, diaAniversario, valorTaxaDeJuros);
+                banco.getClientesDoBanco().get(nomeCliente)
+                        .abrirContaPoupanca(numeroAgencia, numeroConta, saldoInicial, diaAniversario, valorTaxaDeJuros);
                 break;
             case 3:
                 System.out.println("\n\n\n");
@@ -104,22 +115,26 @@ public class MenuBanco {
                 numeroConta = entradaTeclado.nextInt();
                 System.out.println("Saldo inicial: ");
                 saldoInicial = entradaTeclado.nextDouble();
-                System.out.println("Dia de aniversário: ");
+                System.out.println("Quantidades de saques: ");
                 int limiteDeSaques = entradaTeclado.nextInt();
                 banco.getClientesDoBanco().get(nomeCliente).abrirContaSalario(numeroAgencia, numeroConta, saldoInicial, limiteDeSaques);
                 break;
             default:
                 System.out.println("Opção inválida\n");
-                menuPrincipal();
+                break;
         }
+        menuPrincipal();
+    }
+    
+    public void mostraClientesBancoOrdemAlfabetica(){
+        banco.getClientesDoBanco().values().stream().map(cliente -> cliente.getNome()).sorted().forEach(System.out::println);
     }
     
     public void menuRelatorio(int relatorio){
         switch (relatorio){
             case 1:
                 System.out.println("Clientes cadastrados no banco: ");
-                banco.getClientesDoBanco().values().stream().map(cliente -> cliente.getNome()).sorted().forEach(System.out::println);
-                menuPrincipal();
+                mostraClientesBancoOrdemAlfabetica();
                 break;
             case 2:
                 List<Double> listSaldoTotalEmBanco;
@@ -131,11 +146,47 @@ public class MenuBanco {
                     saldoTotalEmBanco += saldo; 
                }
                 System.out.printf("\nValor total no banco: R$ %.2f \n", saldoTotalEmBanco);
-                menuPrincipal();
                 break;
+            case 3:
+                System.out.println("");
+                for(Cliente cliente: banco.getClientesDoBanco().values()){
+                    System.out.println("");
+                    System.out.println("Cliente: "+cliente.getNome());
+                    System.out.println("Contas:");
+                    for(Conta conta: cliente.getListaDeContas()){
+                        System.out.println("");
+                        System.out.println(conta.tipoDeConta);
+                        System.out.println("Dados Da Conta"+conta.toString());
+                        System.out.println("Saldo: "+conta.getSaldo());
+                        System.out.println("\n");
+                    }
+                }
+                
             default:
-                menuPrincipal();
+                System.out.println("Opção inválida!");
+                break;
         }
+        menuPrincipal();
+    }
+    
+    private boolean depositoEmContaPorAgenciaENumeroConta(int numAgencia, int numConta, double valorTransferencia){
+        boolean validado = false;
+        for (Cliente cliente: banco.getClientesDoBanco().values()){
+            int cont = 0;
+            for(Conta conta: cliente.getListaDeContas()){
+                validado = conta.autenticacaoConta(numAgencia, numConta);
+                if(validado){
+                    banco.getClientesDoBanco().get(cliente.nome)
+                            .getListaDeContas().get(cont).depositar(valorTransferencia);
+                    break;
+                }
+                cont++;
+            }
+            if(validado){
+                break;
+            }
+        }
+        return validado;
     }
     
     private boolean validaConta(int numAgencia, int numConta){
@@ -151,27 +202,36 @@ public class MenuBanco {
                 break;
             }
         }
-        
         return validado;
     }
     
-//    public void menuTransferencia(){
-//        mostra(informe a agencia da conta destinataria)
-//        recebe(agencia);
-//        mostra(informe o numero da conta destinataria);
-//        recebe(numeroConta);
-//        se(contaValida(agencia, numeroConta)){ (Criar Método boolean contaValida())
-//            mostra(de onde saira o dinhero);
-//            mostra(contas disponiveis());
-//            recebe(o tipo da conta);
-//            mostra(qual o valor a ser transferido?);
-//            recebe(valor);
-//            se(valor estiver disponivel){
-//                contaRemetente.saldo -= valor;
-//                contaDestinataria += valor
-//            }senão: saldo insuficiente
-//        }senão: contaInexistente
-        
-        
-}
-
+    public void menuTransferencia(){
+        System.out.println("Clientes cadastrados: ");
+        mostraClientesBancoOrdemAlfabetica();
+        System.out.println("Digite o nome do cliente remetente: ");
+        String nomeCliente = entradaTeclado.nextLine();
+        System.out.println("Informe o número de agência da conta destinatária: ");
+        int agContDestino = entradaTeclado.nextInt();
+        System.out.println("Informe o número da conta destinatária: ");
+        int numContDestino = entradaTeclado.nextInt();
+        if(validaConta(agContDestino, numContDestino)){
+            System.out.println("De onde sairá o dinheiro? ");
+            System.out.println("Contas disponíveis para o cliente "+nomeCliente
+                    +"\n"+this.banco.getClientesDoBanco()
+                    .get(nomeCliente).mostraContas());
+            System.out.println("Digite de qual conta deverá ser transferido o dinheiro: ");
+            int tipoContaTransferencia = entradaTeclado.nextInt();
+            System.out.println("Valor disponível em conta: ");
+            System.out.println(banco.getClientesDoBanco().get(nomeCliente)
+                    .getListaDeContas().get(tipoContaTransferencia).getSaldo());
+            System.out.println("Qual valor deseja transferir: ");
+            double valorTransferencia = entradaTeclado.nextDouble();
+            if(valorTransferencia <= banco.getClientesDoBanco().get(nomeCliente)
+                    .getListaDeContas().get(tipoContaTransferencia).getSaldo()){
+                banco.getClientesDoBanco().get(nomeCliente).getListaDeContas()
+                        .get(tipoContaTransferencia).sacar(valorTransferencia);
+                depositoEmContaPorAgenciaENumeroConta(agContDestino, numContDestino, valorTransferencia);
+            }else System.out.println("Saldo insuficiente!");
+        }else System.out.println("Conta inexistente!");
+    }
+}    
