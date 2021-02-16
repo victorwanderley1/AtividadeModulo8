@@ -71,11 +71,11 @@ public class Cliente implements Comparable<Cliente>{
      */
     protected boolean abrirContaCorrente(int numeroAgencia, int numeroConta, 
             double saldo, double chequeEspecial){
-        if(!this.verifiContaPoupanca){
+        if(!this.verifiContaCorrente){
             ContaCorrente contaCorrente = new ContaCorrente(this, numeroAgencia,
                 numeroConta, saldo, chequeEspecial);
             addConta(contaCorrente);
-            this.verifiContaCorrente = false;
+            this.verifiContaCorrente = true;
             return true;
         }else return false;
         
@@ -142,4 +142,3 @@ public class Cliente implements Comparable<Cliente>{
     }
 
 }
-
