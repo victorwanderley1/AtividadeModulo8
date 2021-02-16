@@ -7,9 +7,13 @@ import java.util.stream.Collectors;
  * @author Victor
  */
 public class MenuBanco {
+    //Definições:
     Banco banco = new Banco();
     Scanner entradaTeclado = new Scanner(System.in);
     private boolean ativo = true;
+    
+    // Método para Menu Principal.
+    
     public void menuPrincipal(){
         int opcao = 0;
         while(ativo){
@@ -55,11 +59,21 @@ public class MenuBanco {
         }
     }
     
+    // Métodos para abertura de contas.
+
+    /**
+     * Cria um menu para adicionar um cliente.
+     */
+    
     public void menuCadastrarCliente(){
         System.out.println("\nDigite o nome do cliente a ser cadastrado");
         banco.addCliente(entradaTeclado.nextLine());
     }
     
+    /**
+     *  Cria um menu para que através do método aberturaDeConta crie uma instância
+     * de um tipo de conta para determinado Cliente.
+     */
     public void menuAbrirConta(){
         String nomeCliente = "";
         System.out.println("Selecione o cliente que deseja abrir a conta: \n");
@@ -70,12 +84,12 @@ public class MenuBanco {
             System.out.println("\nSelecione o tipo  de conta: ");
             System.out.println("1 - Conta Corrente\n2 - Conta Poupança\n3 - Conta Salário");
             int tipoDeConta = entradaTeclado.nextInt();
-            menuAberturaDeConta(nomeCliente, tipoDeConta);
+            aberturaDeConta(nomeCliente, tipoDeConta);
         }
         
     }
     
-    private void menuAberturaDeConta(String nomeCliente, int tipoDeConta){
+    private void aberturaDeConta(String nomeCliente, int tipoDeConta){
         switch (tipoDeConta){
             case 1:
                 System.out.println("\n\n\n");
@@ -88,7 +102,10 @@ public class MenuBanco {
                 double saldoInicial = entradaTeclado.nextDouble();
                 System.out.println("Saldo cheque-especial: ");
                 double saldoChequeEspecial = entradaTeclado.nextDouble();
-                banco.getClientesDoBanco().get(nomeCliente).abrirContaCorrente(numeroAgencia, numeroConta, saldoInicial, saldoChequeEspecial);
+                if(banco.getClientesDoBanco().get(nomeCliente)
+                        .abrirContaCorrente(numeroAgencia, numeroConta, saldoInicial, saldoChequeEspecial)){
+                    System.out.println("Conta Aberta Com Sucesso!");
+                }
                 break;
             case 2:
                 System.out.println("\n\n\n");
@@ -103,8 +120,10 @@ public class MenuBanco {
                 int diaAniversario = entradaTeclado.nextInt();
                 System.out.println("Valor taxa de juros: ");
                 double valorTaxaDeJuros = entradaTeclado.nextDouble();
-                banco.getClientesDoBanco().get(nomeCliente)
-                        .abrirContaPoupanca(numeroAgencia, numeroConta, saldoInicial, diaAniversario, valorTaxaDeJuros);
+                if(banco.getClientesDoBanco().get(nomeCliente)
+                        .abrirContaPoupanca(numeroAgencia, numeroConta, saldoInicial, diaAniversario, valorTaxaDeJuros)){
+                    System.out.println("Conta Aberta Com Sucesso!");
+                }
                 break;
             case 3:
                 System.out.println("\n\n\n");
@@ -117,7 +136,11 @@ public class MenuBanco {
                 saldoInicial = entradaTeclado.nextDouble();
                 System.out.println("Quantidades de saques: ");
                 int limiteDeSaques = entradaTeclado.nextInt();
-                banco.getClientesDoBanco().get(nomeCliente).abrirContaSalario(numeroAgencia, numeroConta, saldoInicial, limiteDeSaques);
+                if(banco.getClientesDoBanco().get(nomeCliente)
+                        .abrirContaSalario(numeroAgencia, numeroConta, saldoInicial, limiteDeSaques)){
+                    System.out.println("Conta Aberta Com Sucesso!");
+                }
+                
                 break;
             default:
                 System.out.println("Opção inválida\n");
@@ -126,9 +149,24 @@ public class MenuBanco {
         menuPrincipal();
     }
     
+    /**
+     * Chama um forEach imprimindo os nomes dos cliente em ordem alfabética.
+     */
     public void mostraClientesBancoOrdemAlfabetica(){
         banco.getClientesDoBanco().values().stream().map(cliente -> cliente.getNome()).sorted().forEach(System.out::println);
     }
+    
+    // Métodos de Relatórios
+
+    /**
+     *  Recebe como parâmetro um inteiro passado no método menuPrincipal.
+     * Esse inteiro determina o tipo de relátorio a ser obtido.
+     * Sendo:
+     * 1 -> Todos os clientes cadastrados no banco.
+     * 2 -> Soma do saldo total de todos os clientes do banco.
+     * 3 -> Mostra os detalhes das contas de todos os clientes cadastrados.
+     * @param relatorio
+     */
     
     public void menuRelatorio(int relatorio){
         switch (relatorio){
@@ -169,6 +207,8 @@ public class MenuBanco {
         menuPrincipal();
     }
     
+    // Métodos Para Transferência de Valores
+    
     private boolean depositoEmContaPorAgenciaENumeroConta(int numAgencia, int numConta, double valorTransferencia){
         boolean validado = false;
         for (Cliente cliente: banco.getClientesDoBanco().values()){
@@ -205,6 +245,10 @@ public class MenuBanco {
         return validado;
     }
     
+    /**
+     * Cria um menu para realizar a transferência de valores entre contas de
+     * Clientes. Através do número da Agência e o número da Conta.
+     */
     public void menuTransferencia(){
         System.out.println("Clientes cadastrados: ");
         mostraClientesBancoOrdemAlfabetica();
@@ -231,6 +275,7 @@ public class MenuBanco {
                 banco.getClientesDoBanco().get(nomeCliente).getListaDeContas()
                         .get(tipoContaTransferencia).sacar(valorTransferencia);
                 depositoEmContaPorAgenciaENumeroConta(agContDestino, numContDestino, valorTransferencia);
+                System.out.println("Valor Transferido com sucesso!");
             }else System.out.println("Saldo insuficiente!");
         }else System.out.println("Conta inexistente!");
     }
