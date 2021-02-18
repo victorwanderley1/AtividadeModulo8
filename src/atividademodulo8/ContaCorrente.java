@@ -19,16 +19,19 @@ public class ContaCorrente extends Conta implements Tributavel, Comparable<Conta
         return this.saldo + chequeEspecial;
     }
     
+    @Override
     public boolean sacar(double valorSaque){
         switch (verificarPossibilidadeSaque(valorSaque)){
             case 1:
                 this.saldo -= valorSaque;
+                this.saldo -= valorImpostoMovimentacao(valorSaque); // Subtrai o imposto caso o valor de saque seja aprovado.
                 return true;
                 
             case 2:
                 valorSaque -= this.saldo;
                 this.saldo = 0;
                 chequeEspecial -= valorSaque;
+                this.saldo -= valorImpostoMovimentacao(valorSaque); // Subtrai o imposto caso o valor de saque seja aprovado com cheque especial. Conta ficará com saldo negativo.
                 return true;
                 
             default: 
@@ -44,15 +47,10 @@ public class ContaCorrente extends Conta implements Tributavel, Comparable<Conta
     }
 
     @Override
-    public double valorImpostoTransferencia() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double valorImpostoMovimentacao(double valor) {
+        return 0.018*valor;
     }
 
-    @Override
-    public double valorImpostoManutencaoDaConta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     @Override
     public String toString(){
         return super.toString() +

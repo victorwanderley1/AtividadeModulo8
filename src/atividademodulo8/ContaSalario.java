@@ -4,7 +4,7 @@ package atividademodulo8;
  *
  * @author Victor
  */
-public class ContaSalario extends Conta implements Comparable<Conta>{
+public class ContaSalario extends Conta implements Tributavel, Comparable<Conta>{
     private final int limiteSaques;
     private int quantSaques;
 
@@ -20,6 +20,7 @@ public class ContaSalario extends Conta implements Comparable<Conta>{
     public boolean sacar(double valorSaque) {
         if (verificarPossibilidadeSaque(valorSaque)){
             this.saldo -= valorSaque;
+            this.saldo -= valorImpostoMovimentacao(valorSaque); // Subtrai o imposto caso o valor de saque seja aprovado. Conta ficará com saldo negativo caso seja zerada.
             return true;
         } else return false;
     }
@@ -53,5 +54,10 @@ public class ContaSalario extends Conta implements Comparable<Conta>{
     @Override
     public int compareTo(Conta o) {
         return 2;
+    }
+
+    @Override
+    public double valorImpostoMovimentacao(double valor) {
+        return 0.018*valor;
     }
 }
