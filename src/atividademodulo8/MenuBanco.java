@@ -17,7 +17,6 @@ public class MenuBanco {
     public void menuPrincipal(){
         int opcao = 0;
         while(ativo){
-            opcao = 0;
             System.out.println("\n-------Banco--Mananger--2.0-------");
             System.out.println("");
             System.out.println("Selecione uma opção abaixo:");
